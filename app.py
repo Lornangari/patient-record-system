@@ -52,3 +52,50 @@ def view_patients():
 view_patients()
 
 
+#search patient
+def search_patient():
+    name = input("Enter name to search: ")
+    conn = sqlite3.connect('clinic.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM patients WHERE name LIKE ?", ('%' + name + '%',))
+    records = cursor.fetchall()
+    conn.close()
+
+    print("\n--- Search Results ---")
+    for row in records:
+        print(row)
+    print()
+search_patient()
+
+
+#update patient
+def update_patient():
+    patient_id = int(input("Enter patient ID to update: "))
+    diagnosis = input("New diagnosis: ")
+    medication = input("New medication: ")
+    visit_date = input("New visit date (YYYY-MM-DD): ")
+
+    conn = sqlite3.connect('clinic.db')
+    cursor = conn.cursor()
+    cursor.execute("UPDATE patients SET diagnosis=?, medication=?, visit_date=? WHERE id=?",
+                   (diagnosis, medication, visit_date, patient_id))
+    conn.commit()
+    conn.close()
+    print("Record updated.\n")
+update_patient()
+
+
+#delete patient
+def delete_patient():
+    patient_id = int(input("Enter patient ID to delete: "))
+
+    conn = sqlite3.connect('clinic.db')
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM patients WHERE id=?", (patient_id,))
+    conn.commit()
+    conn.close()
+    print("Record deleted.\n")
+delete_patient()
+
+
+
