@@ -16,8 +16,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":
-    init_db()
+
 
 #add a new patient
 def add_patient():
@@ -34,8 +33,7 @@ def add_patient():
     conn.commit()
     conn.close()
     print("Patient added successfully.\n")
-
-add_patient()    
+    
 
 #view all patients
 def view_patients():
@@ -49,7 +47,6 @@ def view_patients():
     for row in records:
         print(row)
     print()
-view_patients()
 
 
 #search patient
@@ -65,7 +62,6 @@ def search_patient():
     for row in records:
         print(row)
     print()
-search_patient()
 
 
 #update patient
@@ -82,7 +78,6 @@ def update_patient():
     conn.commit()
     conn.close()
     print("Record updated.\n")
-update_patient()
 
 
 #delete patient
@@ -95,7 +90,40 @@ def delete_patient():
     conn.commit()
     conn.close()
     print("Record deleted.\n")
-delete_patient()
+
+
+#main menuloop
+def menu():
+    while True:
+        print("=== Patient Record System ===")
+        print("1. Add Patient")
+        print("2. View All Patients")
+        print("3. Search Patient")
+        print("4. Update Patient")
+        print("5. Delete Patient")
+        print("6. Exit")
+
+        choice = input("Enter choice: ")
+
+        if choice == '1':
+            add_patient()
+        elif choice == '2':
+            view_patients()
+        elif choice == '3':
+            search_patient()
+        elif choice == '4':
+            update_patient()
+        elif choice == '5':
+            delete_patient()
+        elif choice == '6':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Try again.\n")
+
+if __name__ == "__main__":
+    init_db()
+    menu()
 
 
 
