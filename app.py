@@ -1,4 +1,5 @@
 import sqlite3
+import csv
 #clinic database and patients table
 def init_db():
     conn = sqlite3.connect('clinic.db')
@@ -16,6 +17,20 @@ def init_db():
     conn.commit()
     conn.close()
 
+#csv
+def refresh_csv():
+    conn = sqlite3.connect('clinic.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM patients")
+    records = cursor.fetchall()
+    conn.close()
+
+    with open("patients.csv", mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(["ID", "Name", "Age", "Diagnosis", "Medication", "Visit Date"])  
+        writer.writerows(records)
+
+
 
 
 #add a new patient
@@ -32,6 +47,8 @@ def add_patient():
                    (name, age, diagnosis, medication, visit_date))
     conn.commit()
     conn.close()
+
+    refresh_csv()
     print("Patient added successfully.\n")
     
 
@@ -77,6 +94,8 @@ def update_patient():
                    (diagnosis, medication, visit_date, patient_id))
     conn.commit()
     conn.close()
+
+    refresh_csv()
     print("Record updated.\n")
 
 
@@ -89,6 +108,8 @@ def delete_patient():
     cursor.execute("DELETE FROM patients WHERE id=?", (patient_id,))
     conn.commit()
     conn.close()
+    
+    refresh_csv()
     print("Record deleted.\n")
 
 
